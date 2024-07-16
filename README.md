@@ -13,4 +13,4 @@
   
   kisses to everyone
   
-  ![Alt text](images/furbycanuto.jpg)
+  ![Alt text](images/furbycanuto.JPG)
