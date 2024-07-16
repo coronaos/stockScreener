@@ -1,4 +1,4 @@
-#stock Screener
+# stockScreener
 
   Hi everyone,
   
