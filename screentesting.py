@@ -2,22 +2,16 @@ import json
 import yfinance as yf
 from datetime import datetime, timedelta
 
-
-
-# Función para obtener datos históricos de una acción desde Alpha Vantage
 def get_stock_data(symbol):
     stock = yf.Ticker(symbol)
-    #hist = stock.history(period="5d")  # Fetch the last week's data
     end_date = datetime.today()
-    start_date = end_date - timedelta(days=end_date.weekday() + 7)  # Start from the Monday of last week
-    finalle_date = end_date - timedelta(days=end_date.weekday() + 2)
-    start_date_str = start_date.strftime('%Y-%m-%d')
-    #print(start_date_str)
-    end_date_str = finalle_date.strftime('%Y-%m-%d')
-    #print(end_date_str)
-    hist = stock.history(start=start_date_str, end=end_date_str)
-    #print(hist["Close"])
-    # Extract the specific column data
+
+    start_date = end_date - timedelta(days=end_date.weekday() + 7)      #Monday of last week
+    finalle_date = end_date - timedelta(days=end_date.weekday() + 2)    #Friday of last week
+    start_date_str = start_date.strftime('%Y-%m-%d')                    #STR FORMAT
+    end_date_str = finalle_date.strftime('%Y-%m-%d')                    #STR FORMAT
+    hist = stock.history(start=start_date_str, end=end_date_str)        #Get the stock History
+
     if "Close" in hist.columns:
         close_prices = hist["Close"]
 
@@ -33,7 +27,6 @@ def get_stock_data(symbol):
         open_prices = hist["Open"]
 
         # Get the first open price
-        # last_close_date = close_prices.index[-1]
         first_open_date = open_prices.index[0]
         first_open_price = open_prices.iloc[0]
 
@@ -41,21 +34,13 @@ def get_stock_data(symbol):
         result = {str(first_open_date): first_open_price}
         openingPriceWeek = json.dumps(result, indent=2)
 
-    #openingPriceWeekS = str(openingPriceWeek)
-    #closingPr(iceWeekS = str(closingPriceWeek)
-    #print(last_close_price)
-    #print(first_open_price)
     percent = ((last_close_price*100)/first_open_price)-100
-    #print(percent)
-    #print("DATOS OBTENIDOS")
+
     if(percent <= -5):
-        print(symbol, percent) #COMPRAR 5 DOLARES DE CADA ACCION
+        print(symbol, percent)
 
     return 0
 
-
-# Filtrar las acciones según los criterios y mostrar los resultados
-#filtered_stocks = filter_stocks(sp500_tickers, api_key)
 tickers = ["MMM", "ABT", "ABBV", "ACN", "ADBE", "AMD", "AAP", "AES",
     "AFL", "A", "APD", "AKAM", "ALK", "ALB", "ARE", "ALGN", "ALLE",
     "LNT", "ALL", "GOOGL", "GOOG", "MO", "AMZN", "AMCR", "AEE", "AAL", "AEP",
@@ -105,6 +90,8 @@ tickers = ["MMM", "ABT", "ABBV", "ACN", "ADBE", "AMD", "AAP", "AES",
     "WBA", "DIS", "WM", "WAT", "WEC", "WFC", "WELL", "WST", "WDC", "WU",
     "WY", "WHR", "WMB", "WYNN", "XEL", "XRX", "XYL", "YUM",
     "ZBRA", "ZBH", "ZION", "ZTS"]
-print("DATOS PRINTEADOS:")
+
+
+print("STOCKS THAT ARE DOWN 5% OR MORE:")
 for name in tickers:
     get_stock_data(name)
