@@ -3,6 +3,8 @@
   Hi everyone,
   
   This is a script that scans almost the 500 stocks from S&P (hardcoded srry), then it gets from the Yahoo Finance API the Opening Price of the previous week and the Closing Price of it.
+
+  You have to use it at Mondays, unless you change the two variables "start_date" and "finalle_date".
   
   It calculates if the stock went down 5%, if it has gone down, it prints the symbol of the stock and the percentage.
   
