@@ -4,14 +4,14 @@ from datetime import datetime, timedelta
 
 def get_stock_data(symbol):
     stock = yf.Ticker(symbol)
-    end_date = datetime.today()
+    end_date = datetime.today() #Today's date
 
-    start_date = end_date - timedelta(days=end_date.weekday() + 7)      #Monday of last week
-    finalle_date = end_date - timedelta(days=end_date.weekday() + 2)    #Friday of last week
+    nDay = timedelta(days=end_date.weekday()) #The day of the week (Monday==0, Tuesday==1, Wednesday==2, Thursday==3, Friday==4, Saturday==5, Sunday==6)
+    start_date = end_date-nDay                                          #Monday of last week
+    finalle_date =  start_date + timedelta(days=5)                      #Friday of last week
     start_date_str = start_date.strftime('%Y-%m-%d')                    #STR FORMAT
     end_date_str = finalle_date.strftime('%Y-%m-%d')                    #STR FORMAT
     hist = stock.history(start=start_date_str, end=end_date_str)        #Get the stock History
-
     if "Close" in hist.columns:
         close_prices = hist["Close"]
 
@@ -29,15 +29,15 @@ def get_stock_data(symbol):
         # Get the first open price
         first_open_date = open_prices.index[0]
         first_open_price = open_prices.iloc[0]
-
+        
         # Format the result as a JSON string
         result = {str(first_open_date): first_open_price}
         openingPriceWeek = json.dumps(result, indent=2)
 
     percent = ((last_close_price*100)/first_open_price)-100
-
     if(percent <= -5):
-        print(symbol, percent)
+        print(symbol, percent, first_open_date, last_close_date)
+
 
     return 0
 
